@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Socket.io Demo</title>
+</head>
+<body>
+<h1>Socket.io Demo</h1>
+
+<form>
+    <label for="message-input"></label><input type="text" id="message-input">
+    <button type="submit">Send</button>
+</form>
+
+<ul id="message-list"></ul>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+
+    const messageList = document.getElementById('message-list');
+    const messageInput = document.getElementById('message-input');
+
+    // Set up a message event listener
+    socket.on('message', (data) => {
+        const message = document.createElement('li');
+        message.textContent = data;
+        messageList.appendChild(message);
+    });
+
+    // Set up a form submit event listener
+    document.querySelector('form').addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const message = messageInput.value;
+
+        // Send a message to the server
+        socket.emit('message', message);
+
+        messageInput.value = '';
+    });
+</script>
+</body>
+</html>
